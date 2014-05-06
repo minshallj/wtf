@@ -120,16 +120,24 @@ class ADB(CommBase):
     Communicate with a node via adb
     """
 
-    def __init__(self, device_id):
-        self._device_id = device_id
-        self._adb_id = get_adb_id(self._device_id)
+    def __init__(self, adbs_id=None, adb_id=None):
+        if adbs_id is None and adb_id is None:
+            raise StandardError("You must supply either an adbs or adb id")
+        # adbs_id or device_id is used specially in adbs, so for those who
+        # do not use that, supplying the adb_id will have to do
+        if adb_id is not None:
+            self._device_id = adb_id
+            self._adb_id = adb_id
+        else:
+            self._device_id = adbs_id
+            self._adb_id = get_adb_id(self._device_id)
         self._init_session()
         CommBase.__init__(self)
 
     def _init_session(self):
         adb_log_fp = open("wtf.adb.log", "w")
         self.session = pxssh.pxssh(logfile=adb_log_fp)
-        self.session.adbLogin(self._device_id)
+        self.session.adbLogin(self._adb_id)
 
     def _send_cmd(self, command):
         # TODO: Okay.  Here's a mystery.  If the command is 69 chars long,

@@ -317,9 +317,8 @@ class pxssh (spawn):
                 return False
         return True
 
-    def adbLogin(self, device_id, original_prompt=r"[#$]"):
+    def adbLogin(self, adb_id, original_prompt=r"[#$]"):
         """login process for android devices over adb"""
-        adb_id = get_adb_id(device_id)
         subprocess.call(["adb", "-s", adb_id, "root"])
         time.sleep(2)
         subprocess.call(["adb", "-s", adb_id, "wait-for-device"])
