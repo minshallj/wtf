@@ -198,7 +198,7 @@ class ADB(CommBase):
     def get_file(self, src, dst):
         print "copying %s:%s to %s" % (self.name, src, dst)
         r, o = commands.getstatusoutput(
-            "scp root@%s:%s %s" % (self.ipaddr, src, dst))
+            "adb -s %s pull %s %s" % (self._adb_id, src, dst))
         if r != 0:
             raise StandardError("couldn't copy file: %s to %s \n %s" %
                                 (src, dst, o))
@@ -206,7 +206,7 @@ class ADB(CommBase):
     def put_file(self, src, dst):
         print "copying %s to %s:%s" % (src, self.name, dst)
         r, o = commands.getstatusoutput(
-            "rsync %s root@%s:%s" % (src, self.ipaddr, dst))
+            "adb -s %s push %s %s" % (self._adb_id, src, dst))
         if r != 0:
             raise StandardError("couldn't copy file: %s to %s \n %s" %
                                 (src, dst, o))
