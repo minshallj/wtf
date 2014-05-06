@@ -36,7 +36,7 @@ for device in potential_devices:
 
 for dev in devices:
     n += 1
-    android_adb = wtf.comm.ADB(dev)
+    android_adb = wtf.comm.ADB(adbs_id=dev)
     ops = AndroidPlatformOps(android_adb)
     android_adb.name = dev
     android_adb.verbosity = 2
